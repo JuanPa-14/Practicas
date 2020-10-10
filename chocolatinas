@@ -1,0 +1,46 @@
+import warnings
+warnings.filterwarnings("ignore")
+import pandas as pd
+import matplotlib.pyplot as graph
+import statsmodels.formula.api as smf
+from scipy import stats
+dataset = pd.read_csv('Data/chocolate data.txt', index_col=False, sep="\t",header=0)
+(dataset.head())
+# Run this cell!
+
+# DO NOT EDIT ANY OF THIS CODE
+
+# Define a function to perform a linear regression
+def PerformLinearRegression(formula):
+
+    # This performs linear regression
+    lm = smf.ols(formula = formula, data = dataset).fit()
+
+    featureName=formula.split(" ")[-1]
+    
+    # get the data for the x parameter (our feature)
+    ###
+# CHANGE <addFeatureHere> TO weight IN THE LINE BELOW
+###
+PerformLinearRegression('customer_happiness ~ <addFeatureHere>')
+###
+    train_X=dataset[featureName]
+    
+    # This makes and shows a graph
+    intercept=lm.params[0]
+    slope=lm.params[1]
+    line = slope * train_X + intercept
+    graph.plot(train_X, line, '-', c = 'red')
+    graph.scatter(train_X, dataset.customer_happiness)
+    graph.ylabel('customer_happiness')
+    graph.xlabel(featureName)
+    graph.show()
+
+# This performs the linear regression steps listed above
+# The text in red is the formula for our regression
+PerformLinearRegression('customer_happiness ~ cocoa_percent')
+###
+# CHANGE <addFeatureHere> TO weight IN THE LINE BELOW
+###
+PerformLinearRegression('customer_happiness ~ <addFeatureHere>')
+###
